@@ -1,0 +1,7 @@
+add_executable(test_rtti_dynmaic_cast "rtti_dynamic_cast.cpp")
+target_link_libraries(test_rtti_dynmaic_cast rstd)
+add_test(NAME rtti_dynmaic_cast COMMAND test_rtti_dynmaic_cast)
+
+add_executable(test_rtti_dynmaic_cast_fail "rtti_dynamic_cast_fail.cpp")
+target_link_libraries(test_rtti_dynmaic_cast_fail rstd)
+add_test(NAME rtti_dynmaic_cast_fail COMMAND test_rtti_dynmaic_cast_fail)
