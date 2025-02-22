@@ -11,6 +11,8 @@ u64 fnv1a(const u8* data, usize dataLength) {
         hash ^= (data[i]);
         hash *= FNV_PRIME;
     }
+
+    return hash;
 }
 
 u32 crc32(const u8* data, usize dataLength) {

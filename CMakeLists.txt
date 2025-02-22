@@ -23,6 +23,13 @@ if (RADISH_ENABLE_ASSERTIONS)
     add_compile_definitions("RADISH_ENABLE_ASSERTIONS=1")
 endif()
 
+option(MI_OVERRIDE "" OFF)
+option(MI_OPT_SIMD "" ON)
+option(MI_BUILD_SHARED "" OFF)
+option(MI_BUILD_TESTS "" OFF)
+option(MI_BUILD_STATIC "" OFF)
+add_subdirectory("vendor/mimalloc-3.0.1")
+
 set(RSTD_HDRS
 "include/rstd/detail/debugbreak.h"
 "include/rstd/hash/crc.hpp"
@@ -45,6 +52,7 @@ set(RSTD_SRCS
 
 add_library(rstd STATIC ${RSTD_SRCS} ${RSTD_HDRS})
 target_include_directories(rstd PUBLIC "include" PRIVATE "src")
+target_link_libraries(rstd PRIVATE mimalloc-obj)
 
 if (RADISH_BUILD_TESTS)
     message(STATUS "Building tests")

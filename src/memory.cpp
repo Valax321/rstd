@@ -3,7 +3,7 @@
 #include "rstd/memory/malloc.hpp"
 #include "rstd/assert.hpp"
 
-#include <memory>
+#include <mimalloc.h>
 
 #pragma region System Memory Allocators
 namespace rstd {
@@ -11,19 +11,19 @@ namespace rstd {
 static SystemHeap gSystemHeap{};
 
 void* malloc(usize n) noexcept {
-    return std::malloc(n);
+    return mi_malloc(n);
 }
 
 void* calloc(usize n, usize sz) noexcept {
-    return std::calloc(n, sz);
+    return mi_calloc(n, sz);
 }
 
 void* realloc(void* p, usize n) noexcept {
-    return std::realloc(p, n);
+    return mi_realloc(p, n);
 }
 
 void free(void* p) noexcept {
-    std::free(p);
+    mi_free(p);
 }
 
 SystemHeap* rstd::SystemHeap::instance() { return &gSystemHeap; }
@@ -76,35 +76,15 @@ void* operator new(decltype(sizeof(0)) n, rstd::Heap* heap) {
     return heap->alloc(n);
 }
 
-// void* operator new(decltype(sizeof(0)) n, rstd::Heap* heap) noexcept {
-//     RADISH_ASSERT(heap != nullptr);
-//     return heap->alloc(n);
-// }
-
 void* operator new[](decltype(sizeof(0)) n, rstd::Heap* heap) {
     RADISH_ASSERT(heap != nullptr);
     return heap->alloc(n);
 }
 
-// void* operator new[](decltype(sizeof(0)) n, rstd::Heap* heap) noexcept {
-//     RADISH_ASSERT(heap != nullptr);
-//     return heap->alloc(n);
-// }
-
-// void operator delete(void* p, rstd::Heap* heap) {
-//     RADISH_ASSERT(heap != nullptr);
-//     return heap->free(p);
-// }
-
 void operator delete(void* p, rstd::Heap* heap) noexcept {
     RADISH_ASSERT(heap != nullptr);
     return heap->free(p);
 }
-
-// void operator delete[](void* p, rstd::Heap* heap) {
-//     RADISH_ASSERT(heap != nullptr);
-//     return heap->free(p);
-// }
 
 void operator delete[](void* p, rstd::Heap* heap) noexcept {
     RADISH_ASSERT(heap != nullptr);
