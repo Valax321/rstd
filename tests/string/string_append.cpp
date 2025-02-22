@@ -1,10 +1,21 @@
 #include <rstd/string.hpp>
+#include <rstd/assert.hpp>
 
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
 
 using namespace rstd;
+
+assert::AssertHandlerOutcome test_assert_handler(
+    const char* msg, 
+    const char* file, 
+    const char* fn, 
+    int line) {
+        printf("Assertion failed: %s (%s:%d)\n", msg, file, line);
+        exit(-1);
+        return assert::AssertHandlerOutcome::Abort;
+}
 
 int append_string_to_string() {
     String r1("hello, ");
@@ -80,6 +91,8 @@ const test_fn gTests[] = {
 constexpr auto gTestsCount = sizeof(gTests) / sizeof(gTests[0]);
 
 int main(int argc, char* argv[]) {
+    assert::setAssertionHandler(&test_assert_handler);
+
     if (argc >= 2) {
         auto idx = std::atoi(argv[1]);
         return gTests[idx]();
