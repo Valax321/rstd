@@ -11,6 +11,7 @@ constexpr static auto CHAR_SIZE = sizeof(char_type);
 namespace str {
 usize strlen(const char_type* s);
 void strcpy(char_type* dst, const char_type* src, usize count);
+void zero(char_type* p, usize sz);
 }
 
 template<usize Count>
@@ -70,11 +71,13 @@ struct FixedString
 
     constexpr FixedString() = default;
     FixedString(const char_type* s) : m_Length(getClampedLength(str::strlen(s))) {
+        //str::zero(m_Data, Count);
         if (s != nullptr)
             str::strcpy(m_Data, s, m_Length);
     }
 
     FixedString(const String& other) : m_Length(getClampedLength(other.length())) {
+        //str::zero(m_Data, Count);
         str::strcpy(m_Data, other.cstr(), m_Length);
     }
 
@@ -128,7 +131,7 @@ private:
         return length > MAX_LENGTH ? MAX_LENGTH : length;
     }
 
-    char_type m_Data[Count];
+    char_type m_Data[Count]{0};
     usize m_Length{0};
 };
 

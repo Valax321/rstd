@@ -52,17 +52,32 @@ int append_fixed_to_string() {
     return 0;
 }
 
+int check_append_length() {
+    auto s = "hello, world!";
+    String r1("hello, ");
+    String r2("world!");
+
+    r1 += r2;
+
+    if (r1.length() != strlen(s))
+        return 1;
+
+    return 0;
+}
+
 int check_length() {
-    String r1("hello, world!");
-    if (r1.length() != 14)
+    auto s = "hello, world!";
+    String r1(s);
+    if (r1.length() != strlen(s))
         return 1;
 
     return 0;
 }
 
 int check_size() {
-    String r1("hello, world!");
-    if (r1.size() != 15)
+    auto s = "hello, world!";
+    String r1(s);
+    if (r1.size() != (strlen(s) + 1))
         return 1;
 
     return 0;
@@ -85,7 +100,8 @@ const test_fn gTests[] = {
     &append_fixed_to_string,
     &check_length,
     &check_size,
-    &check_ensure_size
+    &check_ensure_size,
+    &check_append_length
 };
 
 constexpr auto gTestsCount = sizeof(gTests) / sizeof(gTests[0]);
@@ -99,7 +115,7 @@ int main(int argc, char* argv[]) {
     } else {
         for (auto i = 0; i < gTestsCount; ++i) {
             auto result = gTests[i]();
-            printf("Test %d returned %d\n", i, result);
+            printf("Test %d returned %d\n", i, result == 0);
         }
     }
 }
