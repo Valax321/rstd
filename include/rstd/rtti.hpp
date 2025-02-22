@@ -33,12 +33,12 @@ private:
 };
 
 template<typename TDestClass, typename TSourceClass>
-TDestClass* dynamicCast(TBaseClass* p) {
+TDestClass* dynamicCast(TSourceClass* p) {
     static_assert(std::is_base_of_v<TSourceClass, TDestClass>, "TDestClass must derive from TSourceClass");
     const ClassInfo* t = &TDestClass::staticClassInfo;
     while (t) {
         if (t == &TSourceClass::staticClassInfo) {
-            return reinterpret_cast<TClass*>(p);
+            return reinterpret_cast<TDestClass*>(p);
         }
 
         t = t->parent();
@@ -49,7 +49,7 @@ TDestClass* dynamicCast(TBaseClass* p) {
 
 template<typename TDestClass, typename TSourceClass>
 const TDestClass* dynamicCast(const TSourceClass* p) {
-    return dynamicCast(reinterpret_cast<TSourceClass*>(p));
+    return dynamicCast(const_cast<TSourceClass*>(p));
 }
 
 }

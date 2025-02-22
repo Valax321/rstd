@@ -134,47 +134,35 @@ private:
 
 #pragma region Append Operators
 
-void operator +=(String& s, const String& other) {
-    s.append(other);        
-}
-
-void operator +=(String& s, const char_type* other) {
-    s.append(other);
-}
+void operator +=(String& s, const String& other);
+void operator +=(String& s, const char_type* other);
 
 template<usize Count>
-void operator +=(String& s, const FixedString<Count>& other) {
+inline void operator +=(String& s, const FixedString<Count>& other) {
     s.append<Count>(other);
 }
 
-String operator +(String lhs, const String& rhs) {
-    lhs.append(rhs);
-    return lhs;
-}
-
-String operator +(String lhs, const char_type* rhs) {
-    lhs.append(rhs);
-    return lhs;
-}
+String operator +(String lhs, const String& rhs);
+String operator +(String lhs, const char_type* rhs);
 
 template<usize Count>
-String operator +(String lhs, const FixedString<Count>& rhs) {
+inline String operator +(String lhs, const FixedString<Count>& rhs) {
     lhs.append<Count>(rhs);
     return lhs;
 }
 
 template<usize Count>
-void operator +=(FixedString<Count>& s, const String& other) {
+inline void operator +=(FixedString<Count>& s, const String& other) {
     s.append(other);
 }
 
 template<usize Count>
-void operator +=(FixedString<Count>& s, const char_type* other) {
+inline void operator +=(FixedString<Count>& s, const char_type* other) {
     s.append<Count>(other);
 }
 
 template<usize Count>
-void operator +=(FixedString<Count>& s, const FixedString<Count>& other) {
+inline void operator +=(FixedString<Count>& s, const FixedString<Count>& other) {
     s.append<Count>(other);
 }
 

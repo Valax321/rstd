@@ -29,11 +29,11 @@ void free(void* p) noexcept {
 SystemHeap* rstd::SystemHeap::instance() { return &gSystemHeap; }
 
 void* rstd::SystemHeap::alloc(usize n) {
-    return malloc(n);
+    return rstd::malloc(n);
 }
 
 void rstd::SystemHeap::free(void* p) {
-    free(p);
+    rstd::free(p);
 }
 
 usize rstd::SystemHeap::getHeapSize() const
