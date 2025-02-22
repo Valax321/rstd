@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <rstd/abi.hpp>
+
 namespace rstd
 {
     using u8 = uint8_t;

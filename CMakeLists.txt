@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 project(rstd LANGUAGES C CXX)
 
+include(GenerateExportHeader)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
@@ -51,7 +53,8 @@ set(RSTD_SRCS
 )
 
 add_library(rstd STATIC ${RSTD_SRCS} ${RSTD_HDRS})
-target_include_directories(rstd PUBLIC "include" PRIVATE "src")
+generate_export_header(rstd EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/include/rstd/abi.hpp")
+target_include_directories(rstd PUBLIC "include" "${CMAKE_CURRENT_BINARY_DIR}/include" PRIVATE "src")
 target_link_libraries(rstd PRIVATE mimalloc-obj)
 
 if (RADISH_BUILD_TESTS)
