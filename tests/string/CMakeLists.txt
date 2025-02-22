@@ -1,10 +1,23 @@
-add_executable(test_string_append "string_append.cpp")
-target_link_libraries(test_string_append rstd)
+add_executable(test_string string_equality.cpp string_append.cpp string_iterator.cpp string_substring.cpp)
+target_link_libraries(test_string rstd_test)
 
-add_test(NAME string_append_string COMMAND test_string_append 0)
-add_test(NAME string_append_charptr COMMAND test_string_append 1)
-add_test(NAME string_append_fixed COMMAND test_string_append 2)
-add_test(NAME string_length COMMAND test_string_append 3)
-add_test(NAME string_size COMMAND test_string_append 4)
-add_test(NAME string_ensure_size COMMAND test_string_append 5)
-add_test(NAME string_appended_size COMMAND test_string_append 6)
+# Append/string ops test
+add_test(NAME string_append_string COMMAND test_string string_append_string)
+add_test(NAME string_append_charptr COMMAND test_string string_append_charptr)
+add_test(NAME string_append_fixed COMMAND test_string string_append_fixed)
+add_test(NAME string_length COMMAND test_string string_length)
+add_test(NAME string_size COMMAND test_string string_size)
+add_test(NAME string_ensure_size COMMAND test_string string_ensure_size)
+add_test(NAME string_appended_size COMMAND test_string string_appended_size)
+
+# Iterator tests
+add_test(NAME string_iterator_manual COMMAND test_string string_iterator_manual)
+add_test(NAME string_iterator_manual_const COMMAND test_string string_iterator_manual_const)
+add_test(NAME string_iterator_auto COMMAND test_string string_iterator_auto)
+add_test(NAME string_iterator_auto_const COMMAND test_string string_iterator_auto_const)
+add_test(NAME string_iterator_arrayop COMMAND test_string string_iterator_arrayop)
+add_test(NAME string_iterator_at COMMAND test_string string_iterator_at)
+add_test(NAME string_iterator_arrayop_at COMMAND test_string string_arrayop_at)
+
+# Substring tests
+add_test(NAME string_substring_index COMMAND test_string substring_indexed)

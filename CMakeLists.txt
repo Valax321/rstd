@@ -33,6 +33,8 @@ option(MI_BUILD_STATIC "" OFF)
 add_subdirectory("vendor/mimalloc-3.0.1")
 
 set(RSTD_HDRS
+"include/rstd/containers/iterator.hpp"
+"include/rstd/containers/vector.hpp"
 "include/rstd/detail/debugbreak.h"
 "include/rstd/hash/crc.hpp"
 "include/rstd/hash/fnv1a.hpp"

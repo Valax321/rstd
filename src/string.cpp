@@ -24,6 +24,10 @@ void zero(char_type* p, usize sz) {
     std::memset(p, 0, sz);
 }
 
+int strcmp(const char_type* lhs, const char_type* rhs) {
+    return std::strcmp(lhs, rhs);
+}
+
 }
 
 String::String() : m_DataSize(1) {
@@ -68,6 +72,10 @@ void String::ensureSize(usize size) {
     }
 }
 
+void String::append(char_type c) {
+    appendN(&c, 1);
+}
+
 void String::append(const String& other) {
     ensureSize((length() + other.length()) + 1);
     ssize startOffset = length();
@@ -96,11 +104,58 @@ void String::appendN(const char_type* other, usize numChars) {
     if (numChars == 0)
         return;
 
-    RADISH_ASSERT(str::strlen(other) <= numChars);
     ensureSize((length() + numChars) + 1);
     ssize startOffset = length();
     str::strcpy(m_Data + startOffset, other, numChars);
     m_Length += numChars;
+}
+
+void String::appendFast(const char_type* other, usize numChars) {
+    ssize startOffset = length();
+    str::strcpy(m_Data + startOffset, other, numChars);
+    m_Length += numChars;
+}
+
+void String::copyTo(String& other) const {
+    other.ensureSize(length() + 1);
+    str::strcpy(other.cstr(), cstr(), length());
+}
+
+void String::copyTo(char_type* other, usize count) const {
+    RADISH_ASSERT(other != nullptr);
+    auto copyChars = length();
+    if (copyChars > count)
+        copyChars = count;
+    str::strcpy(other, cstr(), copyChars);
+}
+
+String String::substring(usize start, usize count) const {
+    RADISH_ASSERT(start + count < length());
+    String r{};
+    r.ensureSize(count + 1);
+    str::strcpy(r.cstr(), cstr(), count);
+    return r;
+}
+
+String String::substring(ConstIterator start, ConstIterator end) const {
+    RADISH_ASSERT(start >= this->begin());
+    RADISH_ASSERT(end <= this->end());
+
+    String r{};
+    r.ensureSize((end - start) + 1);
+    for (auto i = start; i < end; ++i)
+        r.appendFast(&(*i), 1);
+    return r;
+}
+
+String::Iterator String::at(usize position) {
+    RADISH_ASSERT(position < length());
+    return Iterator(m_Data, m_Data + position);
+}
+
+String::ConstIterator String::at(usize position) const {
+    RADISH_ASSERT(position < length());
+    return ConstIterator(m_Data, m_Data + position);
 }
 
 void operator +=(String& s, const String& other) {
@@ -119,6 +174,14 @@ String operator +(String lhs, const String& rhs) {
 String operator +(String lhs, const char_type* rhs) {
     lhs.append(rhs);
     return lhs;
+}
+
+bool operator ==(const String& lhs, const String& rhs) {
+    return str::strcmp(lhs.cstr(), rhs.cstr()) == 0;
+}
+
+bool operator !=(const String& lhs, const String& rhs) {
+    return !(lhs == rhs);
 }
 
 }
